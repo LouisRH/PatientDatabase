@@ -1,22 +1,45 @@
 package patient_database;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+@Entity
 public class Patient {
-    private final long id;
-    private final String firstName;
-    private final String lastName;
-    private final String DOB;
-    private final String email;
-    private final String address;
-    private final String ssn;
+    @Id
+    @GeneratedValue
+    private long id;
+    private String firstName;
+    private String lastName;
+    @JsonDeserialize(using = DateDeserializer.class)
+    private Date DOB;
+    private String email;
+    private String address;
+    private String ssn;
+
+    public Patient() {
+
+    }
 
     public Patient(long id, String firstName, String lastName, String DOB, String email, String address, String ssn) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.DOB = DOB;
         this.email = email;
         this.address = address;
         this.ssn = ssn;
+        try {
+            // Parses the DOB string passed from the form into an actual java date object
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDOB = format.parse(DOB);
+            this.DOB = parsedDOB;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public long getId() {
@@ -31,7 +54,7 @@ public class Patient {
         return lastName;
     }
 
-    public String getDOB() {
+    public Date getDOB() {
         return DOB;
     }
 
@@ -45,5 +68,29 @@ public class Patient {
 
     public String getSsn() {
         return ssn;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setDOB(Date DOB) {
+        this.DOB = DOB;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
     }
 }

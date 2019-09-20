@@ -1,17 +1,30 @@
 package patient_database;
 
 import java.util.concurrent.atomic.AtomicLong;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
 public class PatientController {
     private final AtomicLong requestCounter = new AtomicLong();
+    @Autowired
+    PatientService patientService;
 
-    // A ton of stuff below needs to be changed, right now it's just a placeholder
-    @RequestMapping("/patient")
-    public Patient patient(@RequestParam(value="firstName", defaultValue="Bob") String firstName) {
-        return new Patient(requestCounter.incrementAndGet(), firstName, "Ross", "1/1/2000", "bobross@bobross.com", "123 Fake St", "111-11-111");
+    @GetMapping("/patient")
+    public String loadIndex() {
+        return "index";
+    }
+
+    @PostMapping("/patient")
+    public String addPatient(@RequestBody Patient patient) {
+        patientService.savePatient(patient);
+        return "success";
+    }
+
+    @GetMapping("/success")
+    public String loadSuccess() {
+        return "success";
     }
 }
