@@ -25,23 +25,6 @@ public class Patient {
 
     }
 
-    public Patient(long id, String firstName, String lastName, String DOB, String email, String address, String ssn) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.address = address;
-        this.ssn = ssn;
-        try {
-            // Parses the DOB string passed from the form into an actual java date object
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Date parsedDOB = format.parse(DOB);
-            this.DOB = parsedDOB;
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
     public long getId() {
         return id;
     }
